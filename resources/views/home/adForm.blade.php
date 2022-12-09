@@ -9,13 +9,13 @@
         <div class="col-8">
             <form action="{{ route('home.saveAd') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <input type="text" name="title" placeholder="Title" class="form-control @if($errors->has('title')) {{'is-invalid'}} @endif"><br>
+                <input type="text" name="title" placeholder="Title" value="{{old('title')}}" class="form-control @if($errors->has('title')) {{'is-invalid'}} @endif"><br>
                <label>
                    @error('title')
                    {{$errors->first('title')}}
                    @enderror
                </label>
-                <textarea name="body" placeholder="Body" class="form-control @if($errors->has('body')) {{'is-invalid'}} @endif" cols="30" rows="10"></textarea><br>
+                <textarea name="body" placeholder="Body"  class="form-control @if($errors->has('body')) {{'is-invalid'}} @endif" cols="30" rows="10">{{old('body')}}</textarea><br>
                 <label>
                     @error('body')
                         {{$errors->first('body')}}
