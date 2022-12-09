@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveAdRequest;
 use App\Models\Ad;
 use App\Models\User;
 use App\Models\Message;
@@ -11,15 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -41,7 +33,7 @@ class HomeController extends Controller
     public function updateDeposit(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
 
             "deposit"=>"required|max:4"
@@ -64,30 +56,21 @@ class HomeController extends Controller
         return view('home.adForm',['categories'=>$allCategories]);
     }
 
-    public function saveAd(Request $request)
+    public function saveAd(SaveAdRequest $request)
     {
-        $request->validate([
-            'title' => 'required | max:255',
-            'body' => 'required',
-            'price' => 'required',
-            'image1' => 'mimes:jpeg,jpg,png',
-            'image2' => 'mimes:jpeg,jpg,png',
-            'image3' => 'mimes:jpeg,jpg,png',
-            'category' => 'required'
-        ]);
 
         if($request->hasFile('image1')) {
 
             $image1 = $request->file('image1');
-            $image1_name = time().'1.'.$image1->extension(); 
+            $image1_name = time().'1.'.$image1->extension();
             $image1->move(public_path('ad_images'),$image1_name);
         }
-        
+
         if($request->hasFile('image2')){
             $image2 = $request->file('image2');
             $image2_name = time().'2.'.$image2->extension();
             $image2->move(public_path('ad_images'),$image2_name);
-        } 
+        }
 
         if($request->hasFile('image3')){
             $image3 = $request->file('image3');
@@ -112,9 +95,10 @@ class HomeController extends Controller
 
     public function showSingleAd($id)
     {
-        $single_ad = Ad::find($id);
+        if( ! $single_ad = Ad::find($id))
+            return redirect()->route('home')->with('message', 'Add not found');
 
-        return view('home.singleAd',['single_ad'=>$single_ad]);
+        return view('home.singleAd', compact('single_ad'));
     }
 
     public function showMessages()
