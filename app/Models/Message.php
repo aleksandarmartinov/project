@@ -14,12 +14,12 @@ class Message extends Model
     //RELACIJE
     public function ad()
     {
-        return $this->belongsTo('\App\Models\Ad');
+        return $this->belongsTo( Ad::class );
     }
 
     public function sender()
     {
-        return $this->belongsTo('\App\Models\User','sender_id'); //primary key je sender_id
+        return $this->belongsTo(User::class,'sender_id'); //primary key je sender_id
     }
     
 }

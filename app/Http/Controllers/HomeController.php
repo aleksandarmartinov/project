@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveAdRequest;
 use App\Models\Ad;
 use App\Models\User;
 use App\Models\Message;
@@ -11,37 +12,26 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
+        
         $all_ads = Auth::user()->ads;
 
-        return view('home',['all_ads'=>$all_ads]);
+        return view('home',compact('all_ads'));
     }
 
     public function addDeposit()
     {
+
         return view ('home.addDeposit');
+
     }
 
     public function updateDeposit(Request $request)
     {
         $user = Auth::user();
-        
+    
         $request->validate([
 
             "deposit"=>"required|max:4"
@@ -59,22 +49,14 @@ class HomeController extends Controller
 
     public function adForm()
     {
-        $allCategories = Category::all();
+        $categories = Category::all();
 
-        return view('home.adForm',['categories'=>$allCategories]);
+        return view('home.adForm',compact('categories'));
+
     }
 
-    public function saveAd(Request $request)
+    public function saveAd(SaveAdRequest $request)
     {
-        $request->validate([
-            'title' => 'required | max:255',
-            'body' => 'required',
-            'price' => 'required',
-            'image1' => 'mimes:jpeg,jpg,png',
-            'image2' => 'mimes:jpeg,jpg,png',
-            'image3' => 'mimes:jpeg,jpg,png',
-            'category' => 'required'
-        ]);
 
         if($request->hasFile('image1')) {
 
@@ -108,13 +90,19 @@ class HomeController extends Controller
         ]);
 
         return redirect(route('home'));
+
     }
 
     public function showSingleAd($id)
     {
         $single_ad = Ad::find($id);
 
-        return view('home.singleAd',['single_ad'=>$single_ad]);
+        if (! $single_ad) {
+            return redirect(route('home'))->with('error',"Ad NOT found");
+        }
+
+        return view('home.singleAd',compact('single_ad'));
+
     }
 
     public function showMessages()
@@ -122,6 +110,7 @@ class HomeController extends Controller
         $messages = Message::where('receiver_id',auth()->user()->id)->get();
 
         return view('home.messages',compact('messages'));
+
     }
 
     public function reply()
@@ -132,6 +121,7 @@ class HomeController extends Controller
         $messages = Message::where('sender_id',$sender_id)->where('ad_id',$ad_id)->get();
 
         return view ('home.reply',compact('sender_id','ad_id','messages'));
+
     }
 
     public function replyStore(Request $request)
@@ -147,6 +137,45 @@ class HomeController extends Controller
         $new_msg->save();
 
         return redirect()->route('home.showMessages')->with('message','Reply sent');
+
     }
 
+    public function deleteAd($id)
+    {
+
+        $ad = Ad::find($id);
+        $ad->delete();
+
+        return redirect()->route('home')->with('message','Ad has been successfully deleted');
+
+    }
+
+    public function edit($id)
+    {
+
+        $single_ad = Ad::find($id);
+        $categories = Category::all();
+
+        if (! $single_ad) {
+            return redirect(route('home'))->with('error',"Ad NOT found");
+        }
+
+        return view('home.edit',compact('single_ad','categories'));
+
+    }
+
+    public function updateAd(SaveAdRequest $request,$id)
+    {
+        
+        Ad::where('id',$id)
+        ->update([
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'price' => $request->input('price'),
+            'category_id' => $request->category
+        ]);
+
+        return redirect()->route('home')->with('message','Ad has been successfully updated'); 
+
+    }
 }

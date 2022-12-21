@@ -13,12 +13,12 @@ class Ad extends Model
 
     public function category()
     {
-        return $this->belongsTo('\App\Models\Category');
+        return $this->belongsTo( Category::class );
     }
 
     public function user()
     {
-        return $this->belongsTo('\App\Models\User');
+        return $this->belongsTo( User::class );
     }
 }
 

@@ -13,7 +13,7 @@
                 <li class="list-group-item mb-2">
                     <p>
                         Oglas: {{ $message->ad->title }} {{-- ubacena relacija sa Ad-om u Model\Message --}}
-                        <span class="float_right">
+                        <span class="float-end">
                             {{ $message->created_at->format('d-m-Y') }}
                         </span> 
                     </p>
