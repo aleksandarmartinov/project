@@ -6,6 +6,8 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cookie;
 
 class AdController extends Controller
 {
@@ -31,23 +33,34 @@ class AdController extends Controller
 
         }
 
-        $all_ads = $all_ads->get(); //vraca sve oglase ako nije prosao kroz ni jedan if gore
-        $categories = Category::all();
+        $all_ads = $all_ads->paginate(5); //vraca sve oglase ako nije prosao kroz ni jedan if gore
+        $categories = Category::all()->sortBy('name');
         
         return view ('welcome',compact('all_ads','categories'));
     }
 
-    public function showAd($id)
+    public function showAd($id,Request $request)
     {
         $single_ad = Ad::find($id);
         $category = $single_ad->category; 
 
-        //neka logika za broj pregleda
-        if (auth()->check() && auth()->user()->id !== $single_ad->user_id) { 
-            $single_ad->increment('views');
-        }
+        //broj pregleda
+        if(! auth()->check()) {
+            $cookie_name = (str_replace('.','',($request->ip())).'-'. $single_ad->id);
+            } else {
+                $cookie_name = (auth()->user()->id.'-'. $single_ad->id);
+            }
 
-        return view('singleAd', compact('single_ad','category'));
+            if(Cookie::get($cookie_name) == '') {
+
+                $cookie = cookie($cookie_name, '1', 60);
+                $single_ad->increment('views');
+                return response()
+                ->view('singleAd', compact('single_ad','category'))->withCookie($cookie);
+            } else {
+                return view('singleAd', compact('single_ad','category'));
+            }
+            
     }
 
     public function sendMessage(Request $request,$id)

@@ -38,7 +38,7 @@
                     @csrf
                     <button type="submit" class="col-2 btn btn-danger float-start">Obrisi Oglas</button>
                 </form>
-                <span class="col-offset-6"><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></span>
+                <span class=""><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></span>
             </div>      
         </div>
     </div>
