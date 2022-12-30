@@ -32,7 +32,10 @@
                     <span class="badge bg-info text-dark float-end">Pregleda {{ $ad->views }}</span>
                 </li>
                 @endforeach
-            </ul>
+            </ul><br>
+            <div class="d-flex justify-content-end">
+               {{ $all_ads->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 @endsection

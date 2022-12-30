@@ -74,6 +74,7 @@
         </nav>
 
         <main class="py-4">
+            @include('partials.flash-message')
             @yield('content')
         </main>
     </div>

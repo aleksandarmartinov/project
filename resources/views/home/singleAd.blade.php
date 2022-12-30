@@ -7,7 +7,7 @@
             @include('home.partials.sidebar')
         </div>
         <div class="col-8">
-            <h4>{{ $single_ad->title }}</h4>
+            <h3 class="text-center">{{ $single_ad->title }}</h3>
 
             <div class="row p-3">
                     @if (isset($single_ad->image1))
@@ -29,7 +29,17 @@
                         @endif
                     </div>
                 </div>
-            </div>
+            </div><br>
+            <div class="row p-3">
+                <h4>{{ $single_ad->body }}</h4>
+            </div><br>
+            <div class="row p-3">
+                <form action="{{ route('home.delete', ['id'=>$single_ad->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="col-2 btn btn-danger float-start">Obrisi Oglas</button>
+                </form>
+                <span class=""><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></span>
+            </div>      
         </div>
     </div>
 </div>
@@ -42,7 +52,7 @@
             const thumb = thumbs[i];
             thumb.addEventListener('click',function() {
                 let mainImg = document.querySelector('#main-image');
-                let mianImgSrc = mainImg.getAttribute('src');
+                let mainImgSrc = mainImg.getAttribute('src');
                 let src = this.getAttribute('src');
                 mainImg.setAttribute('src',src);
                 this.setAttribute('src',mainImgSrc);

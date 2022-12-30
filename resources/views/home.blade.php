@@ -3,6 +3,17 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="col-12">
+            @if (session()->has('message'))
+            <div class="mx-auto w-4/5 pb-10 py-3">
+                <div class="border border-t-1 border-danger rounded-b bg-red-100 px-4 py-3 text-red-700 text-center">
+                    {{ session()->get('message') }}
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+    <div class="row">
         <div class="col-4">
             @include('home.partials.sidebar')
         </div>

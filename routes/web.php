@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
 
 
+
 Auth::routes();
 
 Route::get('/', [AdController::class, 'index'])->name('welcome');
@@ -15,7 +16,7 @@ Route::post('/single-ad/{id}/send-message', [AdController::class, 'sendMessage']
 
 //HOME ROUTES VEZANE ZA KORISNIKA
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
-Route::get('/home/add-deposit', [App\Http\Controllers\HomeController::class, 'addDeposit'])->middleware('auth')->name('home.addDeposit');
+Route::get('/home/add-deposit', [App\Http\Controllers\HomeController::class, 'addDeposit'])->name('home.addDeposit');
 Route::get('/home/ad-form', [App\Http\Controllers\HomeController::class, 'adForm'])->middleware('auth')->name('home.adForm');
 Route::get('/home/ad/{id}', [App\Http\Controllers\HomeController::class, 'showSingleAd'])->middleware('auth')->name('home.singleAd');
 Route::get('/home/messages', [App\Http\Controllers\HomeController::class, 'showMessages'])->middleware('auth')->name('home.showMessages');
@@ -24,4 +25,8 @@ Route::get('/home/messages/reply', [App\Http\Controllers\HomeController::class, 
 Route::post('/home/messages/reply', [App\Http\Controllers\HomeController::class, 'replyStore'])->middleware('auth')->name('home.replyStore');
 Route::post('/home/add-deposit', [App\Http\Controllers\HomeController::class, 'updateDeposit'])->middleware('auth')->name('home.addDeposit');
 Route::post('/home/save-ad', [App\Http\Controllers\HomeController::class, 'saveAd'])->middleware('auth')->name('home.saveAd');
+Route::post('/home/delete/{id}', [App\Http\Controllers\HomeController::class, 'deleteAd'])->middleware('auth')->name('home.delete');
+Route::get('/home/edit/{id}', [App\Http\Controllers\HomeController::class, 'edit'])->middleware('auth')->name('home.edit');
+Route::put('/home/edit/{id}', [App\Http\Controllers\HomeController::class, 'updateAd'])->middleware('auth')->name('home.updateAd');
+
 
