@@ -29,7 +29,7 @@
                 <li class="list-group-item">
                     <a href="{{ route('singleAd', ['id'=>$ad->id]) }}">{{ $ad->title }}</a>
                     <span class="badge bg-warning text-dark"> {{$ad->price}} rsd</span>
-                    <span class="badge bg-info text-dark float-end">Pregleda {{ $ad->views }}</span>
+                    <span class="badge bg-info text-dark float-end">Pregleda </span>
                 </li>
                 @endforeach
             </ul><br>

@@ -20,6 +20,11 @@ class Ad extends Model
     {
         return $this->belongsTo( User::class );
     }
+
+    public function views()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }   
 }
 
 
