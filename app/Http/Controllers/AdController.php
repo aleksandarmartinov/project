@@ -6,6 +6,7 @@ use App\Models\Ad;
 use App\Models\Category;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
 
@@ -42,25 +43,13 @@ class AdController extends Controller
     public function showAd($id,Request $request)
     {
         $single_ad = Ad::find($id);
-        $category = $single_ad->category; 
+        $user = Auth::user();
+        $category = $single_ad->category;
+        $viewsCount = $single_ad->views()->count();
+        $single_ad->views()->attach($user);
 
-        //broj pregleda
-        if(! auth()->check()) {
-            $cookie_name = (str_replace('.','',($request->ip())).'-'. $single_ad->id);
-            } else {
-                $cookie_name = (auth()->user()->id.'-'. $single_ad->id);
-            }
-
-            if(Cookie::get($cookie_name) == '') {
-
-                $cookie = cookie($cookie_name, '1', 60);
-                $single_ad->increment('views');
-                return response()
-                ->view('singleAd', compact('single_ad','category'))->withCookie($cookie);
-            } else {
-                return view('singleAd', compact('single_ad','category'));
-            }
-            
+        return view('singleAd', compact('single_ad','category','viewsCount'));
+                    
     }
 
     public function sendMessage(Request $request,$id)

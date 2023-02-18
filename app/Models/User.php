@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Message','receiver_id'); //receiver_id je kljuc relacije odnosno onaj user iz tabele messages koji dobija poruke
     }
+
+    public function views()
+    {
+        return $this->belongsToMany(Ad::class)->withTimestamps();
+    }
 }
