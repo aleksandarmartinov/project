@@ -12,24 +12,26 @@ use Illuminate\Support\Facades\Cookie;
 
 class AdController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $adQuery = Ad::query(); //instanca modela Ad
 
-        if (isset(request()->cat)) {
+        $category = $request->get('cat');
 
-            $adQuery->whereHas('category',function ($query)
+        if ($category) {
+
+            $adQuery->whereHas('category', function ($query) use($category)
             {
-                $query->where('name',request()->cat);
+                $query->where('name', $category);
             });
 
         }
 
         //SORTIRANJE
-        if(isset(request()->type)) {    //u welcome.blade.php imamo name="type"
+        if($request->has('type')) {    //u welcome.blade.php imamo name="type"
 
-            $type = (request()->type == 'lower') ? 'asc' : 'desc';
+            $type = $request->get('type') === 'lower' ? 'asc' : 'desc';
             $adQuery->orderBy('price',$type);
 
         }
@@ -42,11 +44,11 @@ class AdController extends Controller
 
     public function showAd($id,Request $request)
     {
-        $single_ad = Ad::find($id);
+        $single_ad = Ad::with('adViews')->find($id);
         $user = Auth::user();
         $category = $single_ad->category;
-        $viewsCount = $single_ad->views()->count();
-        $single_ad->views()->attach($user);
+        $viewsCount = $single_ad->adViews->count();
+        $single_ad->adViews()->attach($user);
 
         return view('singleAd', compact('single_ad','category','viewsCount'));
 
