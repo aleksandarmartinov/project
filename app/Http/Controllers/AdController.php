@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ad;
+use App\Models\AdUser;
 use App\Models\Category;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
 
@@ -48,7 +50,10 @@ class AdController extends Controller
         $user = Auth::user();
         $category = $single_ad->category;
         $viewsCount = $single_ad->adViews->count();
-        $single_ad->adViews()->attach($user);
+
+        if( ! AdUser::where('user_id', $user->id)->where('ad_id', $single_ad->id)->first()) {
+            $single_ad->adViews()->attach($user);
+        }
 
         return view('singleAd', compact('single_ad','category','viewsCount'));
 

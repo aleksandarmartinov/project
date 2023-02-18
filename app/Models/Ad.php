@@ -23,7 +23,7 @@ class Ad extends Model
 
     public function adViews()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }
 
