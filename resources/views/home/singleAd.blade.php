@@ -38,10 +38,10 @@
                     <button class="btn btn-warning"><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></button>
                 </div>
                 <div class="col-6">
-                    <form action="{{ route('home.delete', ['id'=>$single_ad->id]) }}" method="POST">
+                    <form action="{{ route('adDelete', ['id'=>$single_ad->id]) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn btn-danger float-end">Obrisi Oglas</button>
+                        <button type="submit" class="btn btn-danger float-end" onclick="return confirm('Are you sure you want to delete this post?')">Obrisi Oglas</button>
                     </form>
                 </div>
             </div>              

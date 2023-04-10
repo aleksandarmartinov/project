@@ -26,17 +26,16 @@ class AdController extends Controller
                 $query->where('name', $category);
             });
         }
-        //SORTIRANJE
-        if($request->has('type')) {    //u welcome.blade.php imamo name="type"
 
-            $type = $request->get('type') === 'lower' ? 'asc' : 'desc';
-            $adQuery->orderBy('price',$type);
-        }
+        $adQuery->orderBy('price', $request->get('type') === 'lower' ? 'asc' : 'desc' );
 
         $all_ads = $adQuery->with('adViews')->paginate(5); //vraca sve oglase ako nije prosao kroz ni jedan if gore i vraca broj views-a zbog relacije adViews u Ad modelu
         $categories = Category::all()->sortBy('name');
 
+        $all_ads->appends(['cat' => $category, 'type' => $request->get('type')]);
+
         return view ('welcome',compact('all_ads','categories'));
+
     }
 
     public function show($id,Request $request)
@@ -83,12 +82,39 @@ class AdController extends Controller
 
             return redirect()->back()->with('success', "Ad liked successfully. It now has $likeCount likes.");
         }
+
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $category_id = $request->input('category_id');
+        $categories = Category::all()->sortBy('name');
+    
+        $ads = Ad::query();
+    
+        if ($query) {
+            $ads->where('title', 'LIKE', "%$query%");
+        }
+    
+        if ($category_id) {
+            $ads->where('category_id', $category_id);
+        }
+    
+        $ads = $ads->paginate(5);
+
+        if ($ads->isEmpty()) {
+            return back()->with('info', 'No results found for your search query. Please try again.');
+        }
+    
+        return view('search', compact('ads','categories'));
+    }
+    
 
     public function sendMessage(Request $request,$id)
     {
         $ad = Ad::find($id);
-        $ad_owner = $ad->user; //vlasnik oglasa
+        $ad_owner = $ad->user;
 
         //NOVA PORUKA
         $new_message = new Message();
@@ -99,5 +125,6 @@ class AdController extends Controller
         $new_message->save();
 
         return redirect()->back()->with('AdMessage','Message sent');
+
     }
 }

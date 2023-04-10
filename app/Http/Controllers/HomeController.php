@@ -89,7 +89,7 @@ class HomeController extends Controller
             'category_id' => $request->category
         ]);
 
-        return redirect(route('home'))->with('message','You successfully created an ad, congratulations!');
+        return redirect(route('home'))->with('success','You successfully created an ad, congratulations!');
 
     }
 
@@ -135,7 +135,7 @@ class HomeController extends Controller
 
     }
 
-    public function deleteAd($id)
+    public function destroy($id)
     {
 
         $ad = Ad::find($id);
