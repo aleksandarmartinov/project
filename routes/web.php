@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
+// use App\Http\Controllers\AdLikeController;
 
 
 
@@ -11,7 +12,8 @@ Auth::routes();
 Route::get('/', [AdController::class, 'index'])->name('welcome');
 
 //SINGLE AD ROUTES
-Route::get('/single-ad/{id}', [AdController::class, 'showAd'])->name('singleAd');
+Route::get('/single-ad/{id}', [AdController::class, 'show'])->name('singleAd');
+Route::post('/single-ad/{id}', [AdController::class, 'like'])->name('like');
 Route::post('/single-ad/{id}/send-message', [AdController::class, 'sendMessage'])->name('sendMessage');
 
 //HOME ROUTES VEZANE ZA KORISNIKA
@@ -25,7 +27,7 @@ Route::get('/home/messages/reply', [App\Http\Controllers\HomeController::class, 
 Route::post('/home/messages/reply', [App\Http\Controllers\HomeController::class, 'replyStore'])->middleware('auth')->name('home.replyStore');
 Route::post('/home/add-deposit', [App\Http\Controllers\HomeController::class, 'updateDeposit'])->middleware('auth')->name('home.addDeposit');
 Route::post('/home/save-ad', [App\Http\Controllers\HomeController::class, 'saveAd'])->middleware('auth')->name('home.saveAd');
-Route::post('/home/delete/{id}', [App\Http\Controllers\HomeController::class, 'deleteAd'])->middleware('auth')->name('home.delete');
+Route::delete('/home/delete/{id}', [App\Http\Controllers\HomeController::class, 'deleteAd'])->middleware('auth')->name('home.delete');
 Route::get('/home/edit/{id}', [App\Http\Controllers\HomeController::class, 'edit'])->middleware('auth')->name('home.edit');
 Route::put('/home/edit/{id}', [App\Http\Controllers\HomeController::class, 'updateAd'])->middleware('auth')->name('home.updateAd');
 

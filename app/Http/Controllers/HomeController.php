@@ -89,7 +89,7 @@ class HomeController extends Controller
             'category_id' => $request->category
         ]);
 
-        return redirect(route('home'));
+        return redirect(route('home'))->with('message','You successfully created an ad, congratulations!');
 
     }
 
@@ -102,6 +102,46 @@ class HomeController extends Controller
         }
 
         return view('home.singleAd',compact('single_ad'));
+
+    }
+
+
+    public function edit($id)
+    {
+
+        $single_ad = Ad::find($id);
+        $categories = Category::all();
+
+        if (! $single_ad) {
+            return redirect(route('home'))->with('error',"Ad NOT found");
+        }
+
+        return view('home.edit',compact('single_ad','categories'));
+
+    }
+
+    public function updateAd(SaveAdRequest $request,$id)
+    {
+        
+        Ad::where('id',$id)
+        ->update([
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'price' => $request->input('price'),
+            'category_id' => $request->category
+        ]);
+
+        return redirect()->route('home')->with('message','Ad has been successfully updated'); 
+
+    }
+
+    public function deleteAd($id)
+    {
+
+        $ad = Ad::find($id);
+        $ad->delete();
+
+        return redirect()->route('home')->with('message','Ad has been successfully deleted');
 
     }
 
@@ -137,45 +177,6 @@ class HomeController extends Controller
         $new_msg->save();
 
         return redirect()->route('home.showMessages')->with('message','Reply sent');
-
-    }
-
-    public function deleteAd($id)
-    {
-
-        $ad = Ad::find($id);
-        $ad->delete();
-
-        return redirect()->route('home')->with('message','Ad has been successfully deleted');
-
-    }
-
-    public function edit($id)
-    {
-
-        $single_ad = Ad::find($id);
-        $categories = Category::all();
-
-        if (! $single_ad) {
-            return redirect(route('home'))->with('error',"Ad NOT found");
-        }
-
-        return view('home.edit',compact('single_ad','categories'));
-
-    }
-
-    public function updateAd(SaveAdRequest $request,$id)
-    {
-        
-        Ad::where('id',$id)
-        ->update([
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
-            'price' => $request->input('price'),
-            'category_id' => $request->category
-        ]);
-
-        return redirect()->route('home')->with('message','Ad has been successfully updated'); 
 
     }
 }

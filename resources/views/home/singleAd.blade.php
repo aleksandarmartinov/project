@@ -34,12 +34,17 @@
                 <h4>{{ $single_ad->body }}</h4>
             </div><br>
             <div class="row p-3">
-                <form action="{{ route('home.delete', ['id'=>$single_ad->id]) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="col-2 btn btn-danger float-start">Obrisi Oglas</button>
-                </form>
-                <span class=""><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></span>
-            </div>      
+                <div class="col-6">
+                    <button class="btn btn-warning"><a href="{{ route('home.edit', ['id'=>$single_ad->id]) }}" class="btn btn-warning">Izmeni Oglas</a></button>
+                </div>
+                <div class="col-6">
+                    <form action="{{ route('home.delete', ['id'=>$single_ad->id]) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger float-end">Obrisi Oglas</button>
+                    </form>
+                </div>
+            </div>              
         </div>
     </div>
 </div>

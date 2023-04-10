@@ -25,6 +25,22 @@ class Ad extends Model
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'ad_user_likes');
+    }
+
+    // public function likers()
+    // {
+    //     return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    // }
+
+    // public function isLikedBy($userId)
+    // {
+    //     return $this->likers->contains('id', $userId);
+    // }
+
 }
 
 

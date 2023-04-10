@@ -10,8 +10,6 @@ class Message extends Model
 
     use HasFactory;
 
-    
-    //RELACIJE
     public function ad()
     {
         return $this->belongsTo( Ad::class );

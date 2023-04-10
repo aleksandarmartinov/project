@@ -32,8 +32,22 @@
     <div class="col-12">
         <h1 class="display-4">{{ $single_ad->title }} <span class="btn btn-success"><a href="{{ route('welcome') }}?cat={{ $category->name }}" class="text-light">{{ $category->name }}</a></span> </h1>      
         <p>{{$single_ad->body}}</p><br>
-        <button class="btn btn-warning">{{ $single_ad->user->name }}</button>
-        <button class="btn btn-danger">{{ $single_ad->price }} rsd</button>
+        <div class="row col-sm-2">
+        <button class="float-left btn btn-warning" disabled>{{ $single_ad->user->name }}</button>
+        <button class="float-right btn btn-danger" disabled>{{ $single_ad->price }} rsd</button>
+        </div>
+        <br>
+        {{-- like --}}
+        @if (auth()->check() && auth()->user()->id !== $single_ad->user_id)
+        <div class="card-body">
+            <p class="card-text">Likes: {{ $likeCount }}</p>
+            <form action="{{ route('like', $single_ad->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary">Like</button>
+            </form>
+        </div>
+        @endif
+
     </div>
 
     @if (auth()->check() && auth()->user()->id !== $single_ad->user_id)
