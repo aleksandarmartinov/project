@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
 @section('main')
-    <h1>Rezultati Pretrage</h1>
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-3">
+            <h2 class="text-center p-4">Kategorije</h2>
             <ul class="list-group list-group-flush">
                 @foreach ($categories as $cat)
                     <li class="list-group-item bg-secondary">
                         <a href="{{ route('welcome') }}?cat={{ $cat->name }}" class="text-light">{{ $cat->name }}</a>
                     </li>
                 @endforeach
-                <li class="list-group-item bg-secondary">
+                {{-- <li class="list-group-item bg-secondary">
                     <form action="{{ route('search') }}" method="GET">
                         <select name="type" class="form-control form-select">
                             <option value="lower" {{ (isset(request()->type) && request()->type == 'lower') ?
@@ -23,19 +23,26 @@
                 </li>
             </ul>
         </div> --}}
-        <div class="col-9">
-            <ul class="list-group">
-                @foreach ($ads as $ad)
-                <li class="list-group-item">
-                    <a href="{{ route('singleAd', ['id'=>$ad->id]) }}">{{ $ad->title }}</a>
-                    <span class="badge bg-warning text-dark"> {{$ad->price}} rsd</span>
-                    <span class="badge bg-info text-dark float-end">Pregleda {{$ad->adViews->count()}}</span>
+    </div>
+    <div class="col-9">
+        <h1 class="text-center py-4">Rezultati Pretrage</h1>
+        <ul class="list-group">
+            @foreach ($ads as $ad)
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="ml-auto">
+                        <img src="/ad_images/{{ $ad->image1 }}" alt="{{ $ad->title }}" class="me-3"     width="100">
+                        <a href="{{ route('singleAd', ['id' => $ad->id]) }}" class="text-bold">{{   $ad->title }}</a>
+                    </div> 
+                    <div class="ms-auto">
+                        <button class="badge bg-warning text-dark ms-auto"><i class="bi bi-eye-fill"> Cena: </i><span> {{ $ad->price }} rsd</span> </button>
+                        <button class="badge bg-info text-dark ms-auto"><i class="bi bi-eye-fill"> Vidjeno</i><span> {{ $ad->adViews->count() }}</span> </button>
+                    </div>
                 </li>
-                @endforeach
-            </ul><br>
-            <div class="d-flex justify-content-end">
-               {{ $ads->links('pagination::bootstrap-5') }}
-            </div>
+            @endforeach
+        </ul>
+        <div class="d-flex justify-content-end">
+            {{ $ads->links('pagination::bootstrap-5') }}
         </div>
+    </div>
     </div>
 @endsection

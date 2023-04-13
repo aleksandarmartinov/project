@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <a href="{{ route('welcome') }}" class="navbar-brand">Oglasi</a>
     <ul class="navbar-nav ms-auto">
-        <form class="form-inline my-2 my-lg-0">
+        <form action="{{ route('search') }}" method="GET" class="form-inline my-2 my-lg-0">
             <div class="d-flex">
                 <input type="search" name ="query" class="form-control mr-sm-2 flex-grow-1" placeholder="Search">
                 <button class="btn btn-outline-dark ml-sm-2 my-2 my-sm-0" type="submit">Search</button>

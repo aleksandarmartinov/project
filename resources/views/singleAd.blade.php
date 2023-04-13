@@ -30,27 +30,31 @@
         </div>
     @endif
     <div class="col-12">
-        <h1 class="display-4">{{ $single_ad->title }} <span class="btn btn-success"><a href="{{ route('welcome') }}?cat={{ $category->name }}" class="text-light">{{ $category->name }}</a></span> </h1>      
-        <p>{{$single_ad->body}}</p><br>
+        <div class="d-flex align-items-center">
+        <h1 class="display-4">{{ $single_ad->title }}</h1> 
+        <button class="btn btn-success mx-5 px-5">
+            <a href="{{ route('welcome') }}?cat={{ $category->name }}" class="text-light">{{ $category->name }}</a>
+        </button>
+        </div>     
+        <p class="py-5">{{$single_ad->body}}</p>
         <div class="row col-sm-2">
-        <button class="float-left btn btn-warning" disabled>{{ $single_ad->user->name }}</button>
-        <button class="float-right btn btn-danger" disabled>{{ $single_ad->price }} rsd</button>
+            <button class="float-left btn btn-warning py-2" disabled>{{ $single_ad->user->name }}</button>
+            <button class="float-right btn btn-secondary py-2" disabled>Cena: {{ $single_ad->price }} rsd</button>
         </div>
         <br>
         {{-- like --}}
         @if (auth()->check() && auth()->user()->id !== $single_ad->user_id)
-        <div class="card-body">
-            <p class="card-text">Likes: {{ $likeCount }}</p>
+        <div class="card-body mx-lg-4">
             <form action="{{ route('like', $single_ad->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary">Like</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-thumbs-up"></i> Like <span>{{ $likeCount }}</span> </button>
             </form>
         </div>
         @endif
 
     </div>
 
-    @if (auth()->check() && auth()->user()->id !== $single_ad->user_id)
+    {{-- @if (auth()->check() && auth()->user()->id !== $single_ad->user_id)
     <div class="row mt-3">
         <div class="col-6">
             <form action="{{ route('sendMessage', ['id'=>$single_ad->id]) }}" method="POST">
@@ -65,5 +69,5 @@
             @endif
         </div>
     </div>
-    @endif
+    @endif --}}
 @endsection
