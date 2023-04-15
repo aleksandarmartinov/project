@@ -30,9 +30,9 @@
                 <input type="file" name="image3" class="form-control"><br> --}}
 
                 <select name="category" class="form-control form-select">
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
-                @endforeach
+                    @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ $category->id == old('category_id', $single_ad->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
                 </select><br>
                 
                 <button type="submit" class="btn btn-primary">Save</button>   

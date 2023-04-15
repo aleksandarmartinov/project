@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
-// use App\Http\Controllers\AdLikeController;
-
 
 
 Auth::routes();
