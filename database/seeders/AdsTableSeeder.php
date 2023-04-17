@@ -122,7 +122,7 @@ class AdsTableSeeder extends Seeder
             [
                 'title' => 'I-Phone 13',
                 'body' => 'Na prodaji. U odlicnom stanju. Prateca oprema je ukljucena u cenu. Slobodno me kontaktirajte za vise informacija putem poruka',
-                'price' => 250999,
+                'price' => 90888,
                 'image1' => 'phone1.jpg',
                 'image2' => 'phone2.jpg',
                 'image3' => 'phone3.jpg',
@@ -133,7 +133,7 @@ class AdsTableSeeder extends Seeder
             [
                 'title' => 'Mercedes-Benz Coupe',
                 'body' => 'Jedna poslastica za sve ljubitelje dobrih automobila',
-                'price' => 250999,
+                'price' => 355000,
                 'image1' => 'mercedes1.jpg',
                 'image2' => 'mercedes2.jpg',
                 'image3' => 'mercedes3.jpg',

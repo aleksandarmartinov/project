@@ -153,30 +153,30 @@ class HomeController extends Controller
 
     }
 
-    public function reply()
-    {
-        $sender_id = request()->sender_id;
-        $ad_id = request()->ad_id;
+    // public function reply()
+    // {
+    //     $sender_id = request()->sender_id;
+    //     $ad_id = request()->ad_id;
 
-        $messages = Message::where('sender_id',$sender_id)->where('ad_id',$ad_id)->get();
+    //     $messages = Message::where('sender_id',$sender_id)->where('ad_id',$ad_id)->get();
 
-        return view ('home.reply',compact('sender_id','ad_id','messages'));
+    //     return view ('home.reply',compact('sender_id','ad_id','messages'));
 
-    }
+    // }
 
-    public function replyStore(Request $request)
-    {
-        $sender = User::find($request->sender_id); //user koji je poslao poruku
-        $ad = Ad::find($request->ad_id); //ad na koji je poslata poruka
+    // public function replyStore(Request $request)
+    // {
+    //     $sender = User::find($request->sender_id); //user koji je poslao poruku
+    //     $ad = Ad::find($request->ad_id); //ad na koji je poslata poruka
 
-        $new_msg = new Message();
-        $new_msg->text = $request->msg; //uzeto iz forme
-        $new_msg->sender_id = auth()->user()->id; //odgovara ko je trenutno logovan
-        $new_msg->receiver_id = $sender->id; //reply prima onaj ko je poslao poruku - sender
-        $new_msg->ad_id = $ad->id;
-        $new_msg->save();
+    //     $new_msg = new Message();
+    //     $new_msg->text = $request->msg; //uzeto iz forme
+    //     $new_msg->sender_id = auth()->user()->id; //odgovara ko je trenutno logovan
+    //     $new_msg->receiver_id = $sender->id; //reply prima onaj ko je poslao poruku - sender
+    //     $new_msg->ad_id = $ad->id;
+    //     $new_msg->save();
 
-        return redirect()->route('home.showMessages')->with('message','Reply sent');
+    //     return redirect()->route('home.showMessages')->with('message','Reply sent');
 
-    }
+    // }
 }

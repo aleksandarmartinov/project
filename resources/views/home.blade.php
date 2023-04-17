@@ -14,11 +14,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-4">
+        <div class="col-4 py-4">
             @include('home.partials.sidebar')
         </div>
         <div class="col-8">
-            <h2>Vasi Oglasi</h2>
+            <h2 class="text-center">Vasi Oglasi</h2>
             <ul class="list-group">
                 @foreach ($all_ads as $ad)
                     <li class="list-group-item">

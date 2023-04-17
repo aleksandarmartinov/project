@@ -3,28 +3,32 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-4">
-            @include('home.partials.sidebar')
+        <div class="col-3 py-5">
+            Back dugme
         </div>
-        <div class="col-8">
-             <h2>Sve Poruke</h2>
-             <ul class="list-group">
-                 @foreach ($messages as $message)
-                     <li class="list-group-item mb-2">
-                        <p>
-                            Oglas: {{ $message->ad->title }} {{-- ubacena relacija sa Ad-om u Model\Message --}}
-                            <span class="float-end">
-                                {{ $message->created_at->format('d-m-Y') }}
-                            </span> 
-                        </p>
-                        <p>
-                            From: {{ $message->sender->name }} {{-- ubacena relacija sa User-om u Model\Message --}}
-                        </p>
-                        <p><strong>{{ $message->text }}</strong></p>
-                        <a href="{{ route('home.reply', ['sender_id'=>$message->sender->id,'ad_id'=>$message->ad_id]) }}">Reply</a>
-                     </li>
-                 @endforeach
-             </ul>
+        <div class="col-9">
+             <h2 class="text-center py-1">Sve Poruke</h2>
+             <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Oglas</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($messages as $message)
+                    <tr style="cursor: pointer; cursor: hand; text-decoration: none;" onclick="window.location='{{ route('showMessage', ['id'=>$message->id]) }}';" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
+                        <td>{{ $message->sender->name }}</td>
+                        <td>{{ $message->ad->title }}</td>
+                        <td>{{ substr($message->text, 0, 20) }} {{ strlen($message->text) > 20 ? "..." : "" }}</td>
+                        <td>{{ $message->created_at->format('m/d/Y H:i') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            
         </div>
     </div>
 </div>

@@ -109,22 +109,5 @@ class AdController extends Controller
     
         return view('search', compact('ads','categories'));
     }
-    
 
-    public function sendMessage(Request $request,$id)
-    {
-        $ad = Ad::find($id);
-        $ad_owner = $ad->user;
-
-        //NOVA PORUKA
-        $new_message = new Message();
-        $new_message->text = $request->msg; //name="msg"
-        $new_message->sender_id = auth()->user()->id;
-        $new_message->receiver_id = $ad_owner->id; //poruku prima vlasnik oglasa
-        $new_message->ad_id = $ad->id; //id samog oglasa
-        $new_message->save();
-
-        return redirect()->back()->with('AdMessage','Message sent');
-
-    }
 }

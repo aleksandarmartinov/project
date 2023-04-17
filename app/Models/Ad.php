@@ -41,6 +41,11 @@ class Ad extends Model
     //     return $this->likers->contains('id', $userId);
     // }
 
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
 }
 
 

@@ -27,14 +27,9 @@ class User extends Authenticatable
     ];
 
 
-    public function ads()  //relacija gde jedan user ima mnogo oglasa
+    public function ads()
     {
-        return $this->hasMany('App\Models\Ad'); 
-    }
-
-    public function messages() //relacija za messages
-    {
-        return $this->hasMany('App\Models\Message','receiver_id'); //receiver_id je kljuc relacije odnosno onaj user iz tabele messages koji dobija poruke
+        return $this->hasMany(Ad::class); 
     }
 
     public function views()
@@ -51,5 +46,15 @@ class User extends Authenticatable
     // {
     //     return $this->belongsToMany(Ad::class, 'likes')->withTimestamps();
     // }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class,'sender_id'); 
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class,'receiver_id'); 
+    }
 
 }
