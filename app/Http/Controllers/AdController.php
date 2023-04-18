@@ -27,7 +27,7 @@ class AdController extends Controller
         $adQuery->orderBy('price', $request->get('type') === 'lower' ? 'asc' : 'desc' );
 
         try {
-            $all_ads = $adQuery->with('adViews')->paginate(5);
+            $all_ads = $adQuery->with('adViews')->paginate(6);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->back()->with('error', 'Ad not found.');
         }
