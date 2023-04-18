@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveAdRequest;
 use App\Models\Ad;
-use App\Models\User;
 use App\Models\Message;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -41,6 +40,7 @@ class HomeController extends Controller
         ]);
 
         $user->deposit = $user->deposit + $request->deposit;
+        dd($user);
         $user->save();
 
         return redirect (route('home'));
@@ -106,19 +106,18 @@ class HomeController extends Controller
     }
 
 
-    public function edit($id)
-    {
+public function edit($name)
+{
+    $single_ad = Ad::where('name', $name)->first();
+    $categories = Category::all();
 
-        $single_ad = Ad::find($id);
-        $categories = Category::all();
-
-        if (! $single_ad) {
-            return redirect(route('home'))->with('error',"Ad NOT found");
-        }
-
-        return view('home.edit',compact('single_ad','categories'));
-
+    if (! $single_ad) {
+        return redirect(route('home'))->with('error',"Ad NOT found");
     }
+
+    return view('home.edit',compact('single_ad','categories'));
+}
+
 
     public function updateAd(SaveAdRequest $request,$id)
     {
@@ -131,7 +130,7 @@ class HomeController extends Controller
             'category_id' => $request->category
         ]);
 
-        return redirect()->route('home')->with('message','Ad has been successfully updated'); 
+        return redirect()->route('home')->with('warning','Ad has been successfully updated'); 
 
     }
 
@@ -141,7 +140,7 @@ class HomeController extends Controller
         $ad = Ad::find($id);
         $ad->delete();
 
-        return redirect()->route('home')->with('message','Ad has been successfully deleted');
+        return redirect()->route('home')->with('success','Ad has been successfully deleted');
 
     }
 

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<a href="{{ route('welcome') }}" class="navbar-brand">Oglasi</a>
+<a href="{{ route('welcome') }}" class="navbar-brand m-3">Oglasi</a>
     <ul class="navbar-nav ms-auto">
         <form action="{{ route('search') }}" method="GET" class="form-inline my-2 my-lg-0">
             <div class="d-flex">

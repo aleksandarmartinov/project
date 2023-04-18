@@ -28,6 +28,10 @@ class MessageController extends Controller
         $ad = Ad::find($id);
         $ad_owner = $ad->user;
 
+        $request->validate([
+            'msg' => 'required|string|max:255',
+        ]);
+
         //NOVA PORUKA
         $message = new Message();
         $message->text = $request->msg; //name="msg"
@@ -55,18 +59,17 @@ class MessageController extends Controller
  
     }
 
-    public function destroy(Request $request, $ad_id, $message_id)
+    public function deleteMessage($id)
     {
-        $message = Message::findOrFail($message_id);
-        $single_ad = Ad::findOrFail($ad_id);
+        $message = Message::findOrFail($id);
  
-        if ($message->ad_id != $ad_id) {
-            return redirect()->route('ads.messages.index', ['single_ad' => $ad_id])->with('error', 'Invalid message ID.');
+        if (! $message) {
+            return redirect()->back()->with('error', 'Message not found.');
         }
  
         $message->delete();
  
-        return redirect()->route('ads.messages.index', ['single_ad' => $ad_id])->with('success', 'Message deleted successfully.');
+        return redirect()->route('home.messages', ['message' => $message])->with('success', 'Message deleted successfully.');
  
     }
 

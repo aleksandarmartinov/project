@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-4">
+        <div class="col-4 py-5">
             @include('home.partials.sidebar')
         </div>
         <div class="col-8">
-            <h1 class="text-center">Dodajte Vas Oglas</h1>
+            <h1 class="text-center py-1">Dodajte Vas Oglas</h1>
             <form action="{{ route('home.saveAd') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input type="text" name="title" placeholder="Title" value="{{old('title')}}" class="form-control @if($errors->has('title')) {{'is-invalid'}} @endif"><br>

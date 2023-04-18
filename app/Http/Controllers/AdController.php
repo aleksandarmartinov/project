@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ad;
-use App\Models\Like;
 use App\Models\AdUser;
-use App\Models\Message;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +14,6 @@ class AdController extends Controller
     {
 
         $adQuery = Ad::query(); //stavljamo upit u varijablu gde kasnije koristimo taj upit da gradimo dalje
-
         $category = $request->get('cat');
 
         if ($category) {
@@ -29,7 +26,12 @@ class AdController extends Controller
 
         $adQuery->orderBy('price', $request->get('type') === 'lower' ? 'asc' : 'desc' );
 
-        $all_ads = $adQuery->with('adViews')->paginate(5); //vraca sve oglase ako nije prosao kroz ni jedan if gore i vraca broj views-a zbog relacije adViews u Ad modelu
+        try {
+            $all_ads = $adQuery->with('adViews')->paginate(5);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Ad not found.');
+        }
+
         $categories = Category::all()->sortBy('name');
 
         $all_ads->appends(['cat' => $category, 'type' => $request->get('type')]);
@@ -41,6 +43,11 @@ class AdController extends Controller
     public function show($id,Request $request)
     {
         $single_ad = Ad::with('adViews')->find($id); //adViews je relacija iz modela Ad
+        
+        if (!$single_ad) {
+            return redirect()->back()->with('error', 'Ad not found.');
+        }
+
         $user = Auth::user();
         $category = $single_ad->category;
         $viewsCount = $single_ad->adViews->count(); //adViews je ovde property ne funkcija kao u modelu Ad
@@ -65,6 +72,7 @@ class AdController extends Controller
 
     public function like($id, Request $request)
     {
+
         $single_ad = Ad::find($id);
         $user = Auth::user();
 
@@ -74,7 +82,7 @@ class AdController extends Controller
 
         if ($single_ad->likes()->where('user_id', $user->id)->exists()) {
             $likeCount = $single_ad->likes()->count();
-            return redirect()->back()->with('warning', "You have already liked this ad. It has  $likeCount likes.")->with('warningTtl', 5);
+            return redirect()->back()->with('warning', "You have already liked this ad.")->with('warningTtl', 5);
         } else {
             //create like
             $single_ad->likes()->attach($user->id);
@@ -104,7 +112,7 @@ class AdController extends Controller
         $ads = $ads->paginate(5);
 
         if ($ads->isEmpty()) {
-            return back()->with('info', 'No results found for your search query. Please try again.');
+            return back()->with('info', 'No results found you were searching. Please try again.');
         }
     
         return view('search', compact('ads','categories'));

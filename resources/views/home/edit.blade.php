@@ -3,10 +3,11 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-4">
+        <div class="col-4 py-5">
             @include('home.partials.sidebar')
         </div>
-        <div class="col-8">
+        <div class="col-8 py-1">
+            <h1 class="text-center">Izmenite Vas Oglas</h1>
             <form action="{{ route('home.updateAd', ['id'=>$single_ad->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('put')

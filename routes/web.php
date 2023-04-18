@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\MessageController;
 
 
@@ -31,21 +32,12 @@ Route::delete('/home/delete/{id}', [App\Http\Controllers\HomeController::class, 
 Route::post('/single-ad/{id}/send-message', [MessageController::class, 'createMessage'])->name('createMessage');
 Route::get('/home/messages', [MessageController::class, 'allMessages'])->name('home.messages');
 Route::get('/home/message/{id}', [MessageController::class, 'showMessage'])->name('showMessage');
-Route::delete('/{single_ad}/messages/{message}', [MessageController::class, 'destroy'])->name('ads.messages.destroy');
+Route::delete('/messages/{id}/delete', [MessageController::class, 'deleteMessage'])->name('deleteMessage');
 
-
-
-
-
-Route::get('/{single_ad}/messages/{message}', [MessageController::class, 'show'])->name('ads.messages.show');
-
-Route::prefix('ads')->group(function () {
-    Route::get('/{single_ad}/messages/create', [MessageController::class, 'create'])->name('ads.messages.create');
-
-
-    Route::get('/{message}/reply', [MessageController::class, 'reply'])->name('ads.messages.reply');
-    Route::post('/{message}/reply', [MessageController::class, 'replyStore'])->name('ads.messages.reply.store');
+Route::fallback(function () {
+    return redirect()->back()->with('error', 'Page not found.');
 });
+
 
 
 

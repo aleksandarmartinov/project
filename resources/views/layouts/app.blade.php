@@ -69,7 +69,7 @@
         </nav>
 
         <main class="py-4">
-            @include('partials.flash-message')
+            @include('errors')
             @yield('content')
         </main>
     </div>

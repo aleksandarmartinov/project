@@ -10,20 +10,7 @@
                         <a href="{{ route('welcome') }}?cat={{ $cat->name }}" class="text-light">{{ $cat->name }}</a>
                     </li>
                 @endforeach
-                {{-- <li class="list-group-item bg-secondary">
-                    <form action="{{ route('search') }}" method="GET">
-                        <select name="type" class="form-control form-select">
-                            <option value="lower" {{ (isset(request()->type) && request()->type == 'lower') ?
-                             'selected' : '' }}>Cena rastuce</option>
-                            <option value="upper" {{ (isset(request()->type) && request()->type == 'upper') ?
-                             'selected' : '' }}>Cena opadajuce</option>
-                        </select>
-                        <button type="submit" class="btn btn-success form-control mt-2">Search</button>
-                    </form>
-                </li>
-            </ul>
-        </div> --}}
-    </div>
+        </div>
     <div class="col-9">
         <h1 class="text-center py-4">Rezultati Pretrage</h1>
         <ul class="list-group">

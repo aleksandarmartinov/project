@@ -46,7 +46,7 @@
         <div class="py-3">
             <form action="{{ route('like', $single_ad->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-primary"><i class="fas fa-thumbs-up"></i> Like <span>{{ $likeCount }}</span> </button>
+                <button type="submit" class="btn btn-primary float-left"><i class="fas fa-thumbs-up"></i> Like <span>{{ $likeCount }}</span> </button>
             </form>
         </div>
         @endif
@@ -60,11 +60,9 @@
                 <textarea name="msg" class="form-control" placeholder="Send message to {{ $single_ad->user->name }}" cols="30" rows="10"></textarea><br>
                 <button type="submit" class="btn btn-primary form-control">Send</button>
             </form>
-            @if (session()->has('success'))
-                <div class="alert alert-success">
-                    {{ session()->get('success') }}
-                </div>
-            @endif
+            @error('msg')
+            <p class="bg-warning">{{ $errors->first('msg') }}</p>
+            @enderror
         </div>
     </div>
     @endif
