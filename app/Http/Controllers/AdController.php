@@ -42,51 +42,51 @@ class AdController extends Controller
 
     public function show($id,Request $request)
     {
-        $single_ad = Ad::with('adViews')->find($id); //adViews je relacija iz modela Ad
+        $ad = Ad::with('adViews')->find($id); //adViews je relacija iz modela Ad
         
-        if (!$single_ad) {
+        if (!$ad) {
             return redirect()->back()->with('error', 'Ad not found.');
         }
 
         $user = Auth::user();
-        $category = $single_ad->category;
-        $viewsCount = $single_ad->adViews->count(); //adViews je ovde property ne funkcija kao u modelu Ad
-        $likeCount = $single_ad->likes()->count();
+        $category = $ad->category;
+        $viewsCount = $ad->adViews->count(); //adViews je ovde property ne funkcija kao u modelu Ad
+        $likeCount = $ad->likes()->count();
 
         if ($user) {
-            if( ! AdUser::where('user_id', $user->id)->where('ad_id', $single_ad->id)->first()) {
-                $single_ad->adViews()->attach($user);
+            if( ! AdUser::where('user_id', $user->id)->where('ad_id', $ad->id)->first()) {
+                $ad->adViews()->attach($user);
             }
         }
 
-        // if( ! AdUser::where('user_id', $user->id)->where('ad_id', $single_ad->id)->first()) {
+        // if( ! AdUser::where('user_id', $user->id)->where('ad_id', $ad->id)->first()) {
         // $adUser = new AdUser();
         // $adUser->user_id = $user->id;
-        // $adUser->ad_id = $single_ad->id;
+        // $adUser->ad_id = $ad->id;
         // $adUser->save(); //isto kao gore samo samo sve ovo ostalo umesto attacha-a  
         // }
 
-        return view('singleAd', compact('single_ad','category','viewsCount','likeCount'));
+        return view('singleAd', compact('ad','category','viewsCount','likeCount'));
 
     }
 
-    public function like($id, Request $request)
+    public function like($id)
     {
 
-        $single_ad = Ad::find($id);
+        $ad = Ad::find($id);
         $user = Auth::user();
 
         if (!$user) {
             return redirect()->back()->with('info', 'You need to be logged in to like ads.');
         }
 
-        if ($single_ad->likes()->where('user_id', $user->id)->exists()) {
-            $likeCount = $single_ad->likes()->count();
+        if ($ad->likes()->where('user_id', $user->id)->exists()) {
+            $likeCount = $ad->likes()->count();
             return redirect()->back()->with('warning', "You have already liked this ad.")->with('warningTtl', 5);
         } else {
             //create like
-            $single_ad->likes()->attach($user->id);
-            $likeCount = $single_ad->likes()->count();
+            $ad->likes()->attach($user->id);
+            $likeCount = $ad->likes()->count();
 
             return redirect()->back()->with('success', "Ad liked successfully. It now has $likeCount likes.");
         }

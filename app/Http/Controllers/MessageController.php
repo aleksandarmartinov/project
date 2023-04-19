@@ -49,13 +49,13 @@ class MessageController extends Controller
 
         $message = Message::findOrFail($id);
         $ad_id = $message->ad_id;
-        $single_ad = Ad::findOrFail($ad_id);
+        $ad = Ad::findOrFail($ad_id);
  
         if ($message->ad_id != $ad_id) {
-            return redirect()->route('ads.messages.index', ['single_ad' => $ad_id])->with('error', 'Invalid message ID.');
+            return redirect()->route('ads.messages.index', ['ad' => $ad_id])->with('error', 'Invalid message ID.');
         }
  
-        return view('home.showMessage', ['single_ad' => $single_ad, 'message' => $message,]);
+        return view('home.showMessage', ['ad' => $ad, 'message' => $message,]);
  
     }
 
@@ -109,11 +109,11 @@ class MessageController extends Controller
 
 //    public function create(Request $request, $ad_id)
 //    {
-//        $single_ad = Ad::findOrFail($ad_id);
+//        $ad = Ad::findOrFail($ad_id);
 //        $message = new Message();
 //
 //        return view('messages.create', [
-//            'ad' => $single_ad,
+//            'ad' => $ad,
 //            'message' => $message,
 //        ]);
 //    }
@@ -125,10 +125,10 @@ class MessageController extends Controller
 //
 //    public function reply($ad_id, $message_id)
 //{
-//    $single_ad = Ad::findOrFail($ad_id);
+//    $ad = Ad::findOrFail($ad_id);
 //    $message = Message::findOrFail($message_id);
 //
-//    return view('ads.messages.reply', compact('single_ad', 'message'));
+//    return view('ads.messages.reply', compact('ad', 'message'));
 //}
 //
 //public function replyStore(Request $request, $ad_id, $message_id)

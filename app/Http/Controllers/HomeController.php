@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveAdRequest;
 use App\Models\Ad;
 use App\Models\Message;
 use App\Models\Category;
+use App\Events\AdDeleted;
 use Illuminate\Http\Request;
+use App\Listeners\LogAdDeleted;
+use App\Http\Requests\SaveAdRequest;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -77,7 +79,7 @@ class HomeController extends Controller
             $image3->move(public_path('ad_images'),$image3_name);
         }
 
-        Ad::create([
+        $ad = Ad::create([
 
             'title' => $request->title,
             'body' => $request->body,
@@ -90,32 +92,33 @@ class HomeController extends Controller
         ]);
 
         return redirect(route('home'))->with('success','You successfully created an ad, congratulations!');
+        
 
     }
 
     public function showSingleAd($id)
     {
-        $single_ad = Ad::find($id);
+        $ad = Ad::find($id);
 
-        if (! $single_ad) {
+        if (! $ad) {
             return redirect(route('home'))->with('error',"Ad NOT found");
         }
 
-        return view('home.singleAd',compact('single_ad'));
+        return view('home.singleAd',compact('ad'));
 
     }
 
 
-public function edit($name)
+public function edit($id)
 {
-    $single_ad = Ad::where('name', $name)->first();
+    $ad = Ad::where('id', $id)->first();
     $categories = Category::all();
 
-    if (! $single_ad) {
+    if (! $ad) {
         return redirect(route('home'))->with('error',"Ad NOT found");
     }
 
-    return view('home.edit',compact('single_ad','categories'));
+    return view('home.edit',compact('ad','categories'));
 }
 
 
@@ -139,6 +142,8 @@ public function edit($name)
 
         $ad = Ad::find($id);
         $ad->delete();
+
+        event(new AdDeleted($ad));
 
         return redirect()->route('home')->with('success','Ad has been successfully deleted');
 

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
+
+    
     /**
      * The event to listener mappings for the application.
      *
@@ -18,7 +20,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+            AdDeleted::class => [
+                LogAdDeleted::class,
+            ],
     ];
+    
 
     /**
      * Register any events for your application.
@@ -27,7 +33,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
     }
 
     /**
@@ -39,4 +45,5 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
+    
 }

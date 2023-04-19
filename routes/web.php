@@ -12,8 +12,8 @@ Auth::routes();
 Route::get('/', [AdController::class, 'index'])->name('welcome');
 
 //SINGLE AD ROUTES
-Route::get('/single-ad/{id}', [AdController::class, 'show'])->name('singleAd');
-Route::post('/single-ad/{id}', [AdController::class, 'like'])->name('like');
+Route::get('/ad/{id}', [AdController::class, 'show'])->name('singleAd');
+Route::post('/ad/{id}', [AdController::class, 'like'])->name('like');
 Route::get('/search', [AdController::class, 'search'])->name('search');
 
 
@@ -29,7 +29,7 @@ Route::put('/home/edit/{id}', [App\Http\Controllers\HomeController::class, 'upda
 Route::delete('/home/delete/{id}', [App\Http\Controllers\HomeController::class, 'destroy'])->middleware('auth')->name('adDelete'); //delete
 
 //MESSAGE ROUTES
-Route::post('/single-ad/{id}/send-message', [MessageController::class, 'createMessage'])->name('createMessage');
+Route::post('/ad/{id}/send-message', [MessageController::class, 'createMessage'])->name('createMessage');
 Route::get('/home/messages', [MessageController::class, 'allMessages'])->name('home.messages');
 Route::get('/home/message/{id}', [MessageController::class, 'showMessage'])->name('showMessage');
 Route::delete('/messages/{id}/delete', [MessageController::class, 'deleteMessage'])->name('deleteMessage');

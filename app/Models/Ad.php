@@ -36,10 +36,10 @@ class Ad extends Model
     //     return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     // }
 
-    // public function isLikedBy($userId)
-    // {
-    //     return $this->likers->contains('id', $userId);
-    // }
+    public function isLikedBy($userId)
+    {
+        return $this->likers->contains('id', $userId);
+    }
 
     public function messages()
     {
