@@ -11,18 +11,18 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AdDeleted
+class AdDelete
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
     public $ad;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Ad $ad) 
+    public function __construct(Ad $ad)
     {
         $this->ad = $ad;
     }

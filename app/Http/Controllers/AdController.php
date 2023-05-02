@@ -24,6 +24,18 @@ class AdController extends Controller
             });
         }
 
+        // Filter po ceni
+        $price_from = $request->input('price_from');
+        $price_to = $request->input('price_to');
+        if (isset($price_from)) {
+        $adQuery->where('price', '>=', $price_from);
+        }
+        if (isset($price_to)) {
+        $adQuery->where('price', '<=', $price_to);
+        }
+
+        $adQuery->orderBy('price', $request->get('type') === 'lower' ? 'asc' : 'desc');
+
         $adQuery->orderBy('price', $request->get('type') === 'lower' ? 'asc' : 'desc' );
 
         try {
@@ -97,6 +109,7 @@ class AdController extends Controller
     {
         $query = $request->input('query');
         $category_id = $request->input('category_id');
+        // $category_name = $category_id->name;
         $categories = Category::all()->sortBy('name');
     
         $ads = Ad::query();
@@ -108,6 +121,10 @@ class AdController extends Controller
         if ($category_id) {
             $ads->where('category_id', $category_id);
         }
+
+        // if ($category_name) {
+        //     $ads->where('category_name', $category_name);
+        // }
     
         $ads = $ads->paginate(5);
 

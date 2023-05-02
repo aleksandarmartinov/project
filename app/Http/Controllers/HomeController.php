@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\Message;
+use App\Events\AdDelete;
 use App\Models\Category;
 use App\Events\AdDeleted;
 use Illuminate\Http\Request;
@@ -143,7 +144,7 @@ public function edit($id)
         $ad = Ad::find($id);
         $ad->delete();
 
-        event(new AdDeleted($ad));
+        event(new AdDelete($ad));
 
         return redirect()->route('home')->with('success','Ad has been successfully deleted');
 

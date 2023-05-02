@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\AdDeleted;
+use App\Events\AdDelete;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class LogAdDeleted
+class LogDeletedAd
 {
     /**
      * Create the event listener.
@@ -24,8 +24,8 @@ class LogAdDeleted
      * @param  object  $event
      * @return void
      */
-    public function handle(AdDeleted $event)
+    public function handle(AdDelete $event)
     {
-        logger('This Ad is deleted :' . $event->ad->title);
+        logger('Ad with a id' . $event->ad->id . 'and Title:' . $event->ad->title . 'is deleted!');
     }
 }
