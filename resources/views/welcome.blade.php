@@ -12,15 +12,6 @@
                 @endforeach
                 <li class="list-group-item bg-secondary">
                     <form action="{{ route('welcome') }}" method="GET">
-                      <div class="form-group">
-                        <label for="price_from">Cena od:</label>
-                        <input type="number" name="price_from" id="price_from" class="form-control" value="{{ old('price_from') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="price_to">Cena do:</label>
-                        <input type="number" name="price_to" id="price_to" class="form-control" value="{{ old('price_to') }}">
-                    </div>
-                    <br>
                         <select name="type" class="form-control form-select">
                             <option value="lower" {{ (isset(request()->type) && request()->type == 'lower') ?
                              'selected' : '' }}>Cena rastuce</option>
